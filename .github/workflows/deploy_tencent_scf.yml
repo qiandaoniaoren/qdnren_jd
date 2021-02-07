@@ -1,3 +1,167 @@
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
 name: 部署到腾讯云函数
 
 on:
@@ -26,10 +190,11 @@ jobs:
 
       - name: "将Secrets里面配置的变量添加到severless.yml里面作为环境变量"
         run: |
-          if [ $SCF_REGION ]; then sed -i "s/region:.*$/region: $SCF_REGION/g" serverless.yml; fi;
           if [ $JD_COOKIE ]; then sed -i "/variables/a\      JD_COOKIE: $JD_COOKIE" serverless.yml; fi;
           if [ $JD_DEBUG ]; then sed -i "/variables/a\      JD_DEBUG: $JD_DEBUG" serverless.yml; fi;
           if [ $JD_USER_AGENT ]; then sed -i "/variables/a\      JD_USER_AGENT: $JD_USER_AGENT" serverless.yml; fi;
+          if [ $TENCENTSCF_SOURCE_TYPE ]; then sed -i "/variables/a\      TENCENTSCF_SOURCE_TYPE: $TENCENTSCF_SOURCE_TYPE" serverless.yml; fi;
+          if [ $TENCENTSCF_SOURCE_URL ]; then sed -i "/variables/a\      TENCENTSCF_SOURCE_URL: $TENCENTSCF_SOURCE_URL" serverless.yml; fi;
           if [ $PUSH_KEY ]; then sed -i "/variables/a\      PUSH_KEY: $PUSH_KEY" serverless.yml; fi;
           if [ $BARK_PUSH ]; then sed -i "/variables/a\      BARK_PUSH: $BARK_PUSH" serverless.yml; fi;
           if [ $BARK_SOUND ]; then sed -i "/variables/a\      BARK_SOUND: $BARK_SOUND" serverless.yml; fi;
@@ -57,8 +222,6 @@ jobs:
           if [ $JD_CASH_SHARECODES ]; then sed -i "/variables/a\      JD_CASH_SHARECODES: $JD_CASH_SHARECODES" serverless.yml; fi;
           if [ $JXNC_SHARECODES ]; then sed -i "/variables/a\      JXNC_SHARECODES: $JXNC_SHARECODES" serverless.yml; fi;
           if [ $JDSGMH_SHARECODES ]; then sed -i "/variables/a\      JDSGMH_SHARECODES: $JDSGMH_SHARECODES" serverless.yml; fi;
-          if [ $JDNIAN_SHARECODES ]; then sed -i "/variables/a\      JDNIAN_SHARECODES: $JDNIAN_SHARECODES" serverless.yml; fi;
-          if [ $JDSXSY_SHARECODES ]; then sed -i "/variables/a\      JDSXSY_SHARECODES: $JDSXSY_SHARECODES" serverless.yml; fi;
           if [ $JD_BEAN_STOP ]; then sed -i "/variables/a\      JD_BEAN_STOP: $JD_BEAN_STOP" serverless.yml; fi;
           if [ $JD_BEAN_SIGN_STOP_NOTIFY ]; then sed -i "/variables/a\      JD_BEAN_SIGN_STOP_NOTIFY: $JD_BEAN_SIGN_STOP_NOTIFY" serverless.yml; fi;
           if [ $JD_BEAN_SIGN_NOTIFY_SIMPLE ]; then sed -i "/variables/a\      JD_BEAN_SIGN_NOTIFY_SIMPLE: $JD_BEAN_SIGN_NOTIFY_SIMPLE" serverless.yml; fi;
@@ -79,25 +242,22 @@ jobs:
           if [ $SUPERMARKET_LOTTERY ]; then sed -i "/variables/a\      SUPERMARKET_LOTTERY: $SUPERMARKET_LOTTERY" serverless.yml; fi;
           if [ $FRUIT_BEAN_CARD ]; then sed -i "/variables/a\      FRUIT_BEAN_CARD: $FRUIT_BEAN_CARD" serverless.yml; fi;
           if [ $UN_SUBSCRIBES ]; then sed -i "/variables/a\      UN_SUBSCRIBES: $UN_SUBSCRIBES" serverless.yml; fi;
-          if [ $UN_BIND_CARD_NUM ]; then sed -i "/variables/a\      UN_BIND_CARD_NUM: $UN_BIND_CARD_NUM" serverless.yml; fi;
-          if [ $UN_BIND_STOP_CARD ]; then sed -i "/variables/a\      UN_BIND_STOP_CARD: $UN_BIND_STOP_CARD" serverless.yml; fi;
           if [ $JDJOY_HELPSELF ]; then sed -i "/variables/a\      JDJOY_HELPSELF: $JDJOY_HELPSELF" serverless.yml; fi;
           if [ $JDJOY_APPLYJDBEAN ]; then sed -i "/variables/a\      JDJOY_APPLYJDBEAN: $JDJOY_APPLYJDBEAN" serverless.yml; fi;
           if [ $BUY_JOY_LEVEL ]; then sed -i "/variables/a\      BUY_JOY_LEVEL: $BUY_JOY_LEVEL" serverless.yml; fi;
           if [ $MONEY_TREE_SELL_FRUIT ]; then sed -i "/variables/a\      MONEY_TREE_SELL_FRUIT: $MONEY_TREE_SELL_FRUIT" serverless.yml; fi;
           if [ $FACTORAY_WANTPRODUCT_NAME ]; then sed -i "/variables/a\      FACTORAY_WANTPRODUCT_NAME: $FACTORAY_WANTPRODUCT_NAME" serverless.yml; fi;
           if [ $JXNCTOKENS ]; then sed -i "/variables/a\      JXNCTOKENS: $JXNCTOKENS" serverless.yml; fi;
-          if [ $JD_IMMORTAL_LATLON ]; then sed -i "/variables/a\      JD_IMMORTAL_LATLON: $JD_IMMORTAL_LATLON" serverless.yml; fi;
-          if [ $JD_WECHAT_USER_AGENT ]; then sed -i "/variables/a\      JD_WECHAT_USER_AGENT: $JD_WECHAT_USER_AGENT" serverless.yml; fi;
           if [ $DREAMFACTORY_FORBID_ACCOUNT ]; then sed -i "/variables/a\      DREAMFACTORY_FORBID_ACCOUNT: $DREAMFACTORY_FORBID_ACCOUNT" serverless.yml; fi;
           if [ $JDFACTORY_FORBID_ACCOUNT ]; then sed -i "/variables/a\      JDFACTORY_FORBID_ACCOUNT: $JDFACTORY_FORBID_ACCOUNT" serverless.yml; fi;
           cat serverless.yml
           env
         env: #因为直接读取secrets里面的值很多字符不会自动转译，导致写入serverless.yml异常，所以设置到环境变量，在读取环境变量转译过的值
-          SCF_REGION: ${{ secrets.SCF_REGION }}
           JD_COOKIE: ${{ secrets.JD_COOKIE}}
           JD_DEBUG: ${{ secrets.JD_DEBUG}}
           JD_USER_AGENT: ${{ secrets.JD_USER_AGENT}}
+          TENCENTSCF_SOURCE_TYPE: ${{ secrets.TENCENTSCF_SOURCE_TYPE}}
+          TENCENTSCF_SOURCE_URL: ${{ secrets.TENCENTSCF_SOURCE_URL}}
           PUSH_KEY: ${{ secrets.PUSH_KEY}}
           BARK_PUSH: ${{ secrets.BARK_PUSH}}
           BARK_SOUND: ${{ secrets.BARK_SOUND}}
@@ -125,8 +285,6 @@ jobs:
           JD_CASH_SHARECODES: ${{ secrets.JD_CASH_SHARECODES}}
           JXNC_SHARECODES: ${{ secrets.JXNC_SHARECODES}}
           JDSGMH_SHARECODES: ${{ secrets.JDSGMH_SHARECODES}}
-          JDNIAN_SHARECODES: ${{ secrets.JDNIAN_SHARECODES}}
-          JDSXSY_SHARECODES: ${{ secrets.JDSXSY_SHARECODES}}
           JD_BEAN_STOP: ${{ secrets.JD_BEAN_STOP}}
           JD_BEAN_SIGN_STOP_NOTIFY: ${{ secrets.JD_BEAN_SIGN_STOP_NOTIFY}}
           JD_BEAN_SIGN_NOTIFY_SIMPLE: ${{ secrets.JD_BEAN_SIGN_NOTIFY_SIMPLE}}
@@ -147,16 +305,12 @@ jobs:
           SUPERMARKET_LOTTERY: ${{ secrets.SUPERMARKET_LOTTERY}}
           FRUIT_BEAN_CARD: ${{ secrets.FRUIT_BEAN_CARD}}
           UN_SUBSCRIBES: ${{ secrets.UN_SUBSCRIBES}}
-          UN_BIND_CARD_NUM: ${{ secrets.UN_BIND_CARD_NUM}}
-          UN_BIND_STOP_CARD: ${{ secrets.UN_BIND_STOP_CARD}}
           JDJOY_HELPSELF: ${{ secrets.JDJOY_HELPSELF}}
           JDJOY_APPLYJDBEAN: ${{ secrets.JDJOY_APPLYJDBEAN}}
           BUY_JOY_LEVEL: ${{ secrets.BUY_JOY_LEVEL}}
           MONEY_TREE_SELL_FRUIT: ${{ secrets.MONEY_TREE_SELL_FRUIT}}
           FACTORAY_WANTPRODUCT_NAME: ${{ secrets.FACTORAY_WANTPRODUCT_NAME}}
           JXNCTOKENS: ${{ secrets.JXNCTOKENS}}
-          JD_IMMORTAL_LATLON: ${{ secrets.JD_IMMORTAL_LATLON}}
-          JD_WECHAT_USER_AGENT: ${{ secrets.JD_WECHAT_USER_AGENT}}
           DREAMFACTORY_FORBID_ACCOUNT: ${{ secrets.DREAMFACTORY_FORBID_ACCOUNT}}
           JDFACTORY_FORBID_ACCOUNT: ${{ secrets.JDFACTORY_FORBID_ACCOUNT}}
 
